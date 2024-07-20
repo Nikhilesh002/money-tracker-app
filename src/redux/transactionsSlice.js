@@ -28,7 +28,7 @@ const transactionsSlice = createSlice({
       }
     },
     removeTransaction: (state, action) => {
-      state.transactions = state.transactions.filter(trans => trans.dateTime !== action.payload.dateTime);
+      state.transactions = state.transactions.filter(trans => trans.id !== action.payload.id);
     },
     setFilter: (state, action) => {
       state.filters[action.payload.name] = action.payload.value;

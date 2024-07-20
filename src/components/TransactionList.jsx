@@ -21,9 +21,9 @@ const TransactionList = () => {
     setSelectedTransaction(transaction);
   };
 
-  const handleDelete = (dateTime) => {
+  const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
-      dispatch(removeTransaction({ dateTime }));
+      dispatch(removeTransaction({ id }));
     }
   };
 
@@ -143,7 +143,7 @@ const TransactionList = () => {
             </div>
           </div>
           {groupedTransactions[date].map((transaction) => (
-            <div key={transaction.dateTime}>
+            <div key={transaction.id}>
               <div
                 className={
                   isDarkMode ? "text-gray-400 mb-2" : "text-gray-600 mb-2"
@@ -182,7 +182,7 @@ const TransactionList = () => {
                       ? "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                       : "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                   }
-                  onClick={() => handleDelete(transaction.dateTime)}
+                  onClick={() => handleDelete(transaction.id)}
                 >
                   Delete
                 </button>
