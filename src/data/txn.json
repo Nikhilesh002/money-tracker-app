@@ -1,0 +1,218 @@
+[
+  {
+      "dateTime": 45459.269019619074,
+      "amount": 2122.55,
+      "type": "Expense",
+      "category": "Healthcare",
+      "title": "Rentdt",
+      "currency": "EUR",
+      "note": "Transaction related to Healthcare"
+  },
+  {
+      "dateTime": 45145.11998026722,
+      "amount": 2654.26,
+      "type": "Expense",
+      "category": "Shopping",
+      "title": "Dining Out",
+      "currency": "JPY",
+      "note": "Transaction related to Shopping"
+  },
+  {
+      "dateTime": 45308.39631128574,
+      "amount": 1565.53,
+      "type": "Expense",
+      "category": "Travel",
+      "title": "Insurance",
+      "currency": "JPY",
+      "note": "Transaction related to Travel"
+  },
+  {
+      "dateTime": 45177.621160822775,
+      "amount": 3219.42,
+      "type": "Income",
+      "category": "Investment",
+      "title": "Rental Income",
+      "currency": "USD",
+      "note": "Transaction related to Investment"
+  },
+  {
+      "dateTime": 45380.052781193146,
+      "amount": 24.56,
+      "type": "Expense",
+      "category": "Entertainment",
+      "title": "Education",
+      "currency": "JPY",
+      "note": "Transaction related to Entertainment"
+  },
+  {
+      "dateTime": 45272.8699918413,
+      "amount": 440.6,
+      "type": "Expense",
+      "category": "Food",
+      "title": "Insurance",
+      "currency": "EUR",
+      "note": "Transaction related to Food"
+  },
+  {
+      "dateTime": 45484.50170480426,
+      "amount": 2424.58,
+      "type": "Expense",
+      "category": "Education",
+      "title": "Pet Care",
+      "currency": "USD",
+      "note": "Transaction related to Education"
+  },
+  {
+      "dateTime": 45311.23201730426,
+      "amount": 593.15,
+      "type": "Expense",
+      "category": "Entertainment",
+      "title": "Clothing",
+      "currency": "EUR",
+      "note": "Transaction related to Entertainment"
+  },
+  {
+      "dateTime": 45490.95605665611,
+      "amount": 1366.7,
+      "type": "Expense",
+      "category": "Travel",
+      "title": "Rent",
+      "currency": "INR",
+      "note": "Transaction related to Travel"
+  },
+  {
+      "dateTime": 45352.462133045,
+      "amount": 136.07,
+      "type": "Expense",
+      "category": "Travel",
+      "title": "Clothing",
+      "currency": "GBP",
+      "note": "Transaction related to Travel"
+  },
+  {
+      "dateTime": 45261.35863767463,
+      "amount": 4908.38,
+      "type": "Expense",
+      "category": "Shopping",
+      "title": "Dining Out",
+      "currency": "GBP",
+      "note": "Transaction related to Shopping"
+  },
+  {
+      "dateTime": 45413.89332517463,
+      "amount": 1081.4,
+      "type": "Expense",
+      "category": "Education",
+      "title": "Utilities",
+      "currency": "EUR",
+      "note": "Transaction related to Education"
+  },
+  {
+      "dateTime": 45364.84351035982,
+      "amount": 3491.5,
+      "type": "Expense",
+      "category": "Education",
+      "title": "Fitness",
+      "currency": "GBP",
+      "note": "Transaction related to Education"
+  },
+  {
+      "dateTime": 45306.252665452404,
+      "amount": 1189.41,
+      "type": "Expense",
+      "category": "Travel",
+      "title": "Pet Care",
+      "currency": "USD",
+      "note": "Transaction related to Travel"
+  },
+  {
+      "dateTime": 45289.69180897093,
+      "amount": 3312.08,
+      "type": "Expense",
+      "category": "Healthcare",
+      "title": "Education",
+      "currency": "EUR",
+      "note": "Transaction related to Healthcare"
+  },
+  {
+      "dateTime": 45327.83868397093,
+      "amount": 2343.95,
+      "type": "Expense",
+      "category": "Healthcare",
+      "title": "Childcare",
+      "currency": "GBP",
+      "note": "Transaction related to Healthcare"
+  },
+  {
+      "dateTime": 45309.18562841537,
+      "amount": 32.67,
+      "type": "Expense",
+      "category": "Transportation",
+      "title": "Household Supplies",
+      "currency": "INR",
+      "note": "Transaction related to Transportation"
+  },
+  {
+      "dateTime": 45355.75506128574,
+      "amount": 4045.12,
+      "type": "Expense",
+      "category": "Rent",
+      "title": "Miscellaneous",
+      "currency": "USD",
+      "note": "Transaction related to Rent"
+  },
+  {
+      "dateTime": 45194.02081360055,
+      "amount": 4904.23,
+      "type": "Expense",
+      "category": "Healthcare",
+      "title": "Entertainment",
+      "currency": "INR",
+      "note": "Transaction related to Healthcare"
+  },
+  {
+      "dateTime": 45354.71840619315,
+      "amount": 2397.95,
+      "type": "Expense",
+      "category": "Shopping",
+      "title": "Gifts",
+      "currency": "EUR",
+      "note": "Transaction related to Shopping"
+  },
+  {
+      "dateTime": 45260.1861492487,
+      "amount": 2385.64,
+      "type": "Expense",
+      "category": "Food",
+      "title": "Entertainment",
+      "currency": "EUR",
+      "note": "Transaction related to Food"
+  },
+  {
+      "dateTime": 45386.73815156352,
+      "amount": 4250.06,
+      "type": "Expense",
+      "category": "Utilities",
+      "title": "Subscriptions",
+      "currency": "USD",
+      "note": "Transaction related to Utilities"
+  },
+  {
+      "dateTime": 45230.26743397093,
+      "amount": 43.12,
+      "type": "Expense",
+      "category": "Transportation",
+      "title": "Miscellaneous",
+      "currency": "INR",
+      "note": "Transaction related to Transportation"
+  },
+  {
+      "dateTime": 45243.84176267463,
+      "amount": 914.71,
+      "type": "Expense",
+      "category": "Shopping",
+      "title": "Gifts",
+      "currency": "INR",
+      "note": "Transaction related to Shopping"
+  }
+]
