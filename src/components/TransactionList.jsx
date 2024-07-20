@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { MdOutlineDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeTransaction,
@@ -22,9 +24,8 @@ const TransactionList = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this transaction?")) {
-      dispatch(removeTransaction({ id }));
-    }
+    dispatch(removeTransaction({ id }));
+    toast.error("Transaction deleted");
   };
 
   const handleFilterChange = (name, value) => {
@@ -69,14 +70,24 @@ const TransactionList = () => {
     {}
   );
 
+  function getSum(txnsOfAday,type){
+    let sum=0;
+    for(let i=0;i<txnsOfAday.length;i++){
+      if(txnsOfAday[i].type==="Income" && type===1) sum+=txnsOfAday[i].amount;
+      if(txnsOfAday[i].type==="Expense" && type===2) sum+=txnsOfAday[i].amount;
+    }
+    return sum===0?sum:sum.toFixed(2);
+  }
+
   return (
     <div
       className={
         isDarkMode
-          ? "bg-gray-800 min-h-screen text-white mt-10"
-          : "bg-gray-100 min-h-screen mt-10"
+          ? "bg-gray-800 min-h-screen text-white mt-10 font-bold"
+          : "bg-gray-100 min-h-screen mt-10 font-bold"
       }
     >
+      <Toaster position="top-right" />
       {/* filters */}
       <div className="filters flex justify-between p-4">
         <input
@@ -122,13 +133,13 @@ const TransactionList = () => {
         </select>
       </div>
       {/* to show day wise of the month */}
-      {Object.keys(groupedTransactions).map((date) => (
+      {Object.keys(groupedTransactions).map((date, index) => (
         <div
-          key={date}
+          key={index}
           className={
             isDarkMode
-              ? "bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-96 mx-auto"
-              : "bg-white shadow-md rounded-lg p-6 mb-4 w-96 mx-auto"
+              ? "bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
+              : "bg-white shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
           }
         >
           <div className="flex justify-between mb-2">
@@ -141,57 +152,34 @@ const TransactionList = () => {
             >
               {new Date(date).toLocaleDateString()}
             </div>
+            <div className="flex justify-between gap-2">  
+              {/* 1-> income  2->expense */}
+              <div className="text-green-500">{getSum(groupedTransactions[date],1)}</div>
+              <div className="text-red-500">{getSum(groupedTransactions[date],2)}</div>
+            </div>
           </div>
-          {groupedTransactions[date].map((transaction) => (
-            <div key={transaction.id}>
-              <div
-                className={
-                  isDarkMode ? "text-gray-400 mb-2" : "text-gray-600 mb-2"
-                }
-              >
-                {transaction.title}
-              </div>
-              <div className="flex justify-between">
-                <div className={isDarkMode ? "text-gray-500" : "text-gray-700"}>
-                  {transaction.category}
+          {groupedTransactions[date].map((transaction, index) => (
+            <div key={index} className="my-0.5 text-center">
+              {/* cat note amount delete */}
+              <div className="flex w-100">
+                <div className="w-3/4 flex ">
+                  <div className="w-1/3 bg-slate-200 rounded">{transaction.category}</div>
+                  <div className="w-2/3">
+                    <button onClick={() => handleEdit(transaction)}>{transaction.title}</button>
+                  </div>
                 </div>
-                <div
-                  className={
-                    transaction.type === "Income"
-                      ? "text-green-600 font-semibold"
-                      : "text-red-600 font-semibold"
-                  }
-                >
-                  {transaction.amount}
-                </div>
+                <div className="w-1/4 flex justify-between">
+                <div className={transaction.type==="Income"?"text-green-500":"text-red-500"}>{transaction.amount}</div>
+              <button className="" onClick={() => handleDelete(transaction.id)}>
+                <MdOutlineDeleteForever className="text-red-500 font-extrabold text-2xl" />
+              </button>
               </div>
-              <div className="flex justify-end mt-2">
-                <button
-                  className={
-                    isDarkMode
-                      ? "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                      : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                  }
-                  onClick={() => handleEdit(transaction)}
-                >
-                  Edit
-                </button>
-                <button
-                  className={
-                    isDarkMode
-                      ? "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                      : "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  }
-                  onClick={() => handleDelete(transaction.id)}
-                >
-                  Delete
-                </button>
               </div>
             </div>
           ))}
         </div>
       ))}
-      {selectedTransaction && (
+      {selectedTransaction!==null && (
         <TransactionForm
           transaction={selectedTransaction}
           onClose={() => setSelectedTransaction(null)}
