@@ -10,7 +10,10 @@ import { CiLight } from "react-icons/ci";
 
 function App() {
   // dark mode
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedThemeMode = localStorage.getItem("darkMode");
+    return savedThemeMode === "true";
+  });
 
   useEffect(() => {
     localStorage.setItem("darkMode", isDarkMode);
@@ -18,6 +21,7 @@ function App() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+    localStorage.setItem("darkMode", isDarkMode);
   };
 
   const dispatch = useDispatch();

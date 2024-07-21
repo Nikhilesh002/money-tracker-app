@@ -243,8 +243,14 @@ const TransactionList = () => {
               className="my-1 text-center bg-slate-50 dark:bg-gray-800 p-1"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              whileHover={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => {
+                if (e.target.closest(".delete-icon")) {
+                  return;
+                }
+                handleEdit(transaction);
+              }}
             >
               {/* cat note amount delete */}
               <div className="flex w-100">
@@ -255,7 +261,7 @@ const TransactionList = () => {
                     {transaction.category}
                   </div>
                   <div className="w-2/3">
-                    <button onClick={() => handleEdit(transaction)}>
+                    <button className="hover:underline hover:text-gray-300" onClick={() => handleEdit(transaction)}>
                       {transaction.title}
                     </button>
                   </div>
@@ -273,7 +279,7 @@ const TransactionList = () => {
                       transaction.amount}
                   </div>
                   <button
-                    className=""
+                    className="delete-icon"
                     onClick={() => handleDelete(transaction.id)}
                   >
                     <MdOutlineDeleteForever className="text-red-500 dark:text-red-400 font-extrabold text-2xl" />
