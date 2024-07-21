@@ -7,7 +7,7 @@ const MonthSelection = () => {
   const selectedMonth = useSelector(
     (state) => state.transactions.selectedMonth
   );
-  console.log(selectedMonth);
+  // console.log(selectedMonth);
 
   const handleMonthChange = (direction) => {
     const newDate = new Date(selectedMonth);
