@@ -21,6 +21,14 @@ const TransactionForm = ({ transaction, onClose }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
+    // console.log(formData.dateTime);
+    // console.log(new Date(formData.dateTime));
+    if (!formData.dateTime || !formData.amount || !formData.title) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    formData.amount=Number(formData.amount);
+    // console.log(formData);
     if (transaction) {
       dispatch(editTransaction(formData));
       toast.success("Transaction edited!");
@@ -61,7 +69,6 @@ const TransactionForm = ({ transaction, onClose }) => {
         exit={{ y: -50, opacity: 0 }}
       >
         <div className="bg-white dark:bg-gray-800 shadow-md px-6 py-4 rounded-md w-96 mx-auto">
-          <Toaster />
           <h1 className="font-semibold text-xl text-center mb-3 dark:text-white">
             Transaction Form
           </h1>
