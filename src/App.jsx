@@ -46,13 +46,16 @@ function App() {
     };
 
     fetchExcelData();
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className={isDarkMode ? "bg-black" : "bg-white"}>
+    <div className={`${isDarkMode ? "dark" : ""}`}>
       <Header />
-      <button className="absolute mt-4 right-3 border border-gray-700 p-0.5 text-2xl rounded" onClick={() => toggleDarkMode()}>
-        {isDarkMode ? <CiLight/> : <MdDarkMode/>}
+      <button
+        className="absolute mt-4 right-3 border bg-white dark:bg-gray-800 dark:text-white border-gray-700 p-0.5 text-2xl rounded"
+        onClick={toggleDarkMode}
+      >
+        {isDarkMode ? <CiLight /> : <MdDarkMode />}
       </button>
       <TransactionManager />
     </div>

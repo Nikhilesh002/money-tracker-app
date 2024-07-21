@@ -138,6 +138,7 @@ const TransactionForm = ({ transaction, onClose }) => {
                 <option value="Utilities">Utilities</option>
                 <option value="Salary">Salary</option>
                 <option value="Gift">Gift</option>
+                <option value="Freelance">Freelance</option>
                 <option value="Others">Others</option>
               </select>
             </div>
@@ -175,7 +176,7 @@ const TransactionForm = ({ transaction, onClose }) => {
           </div>
           <div className="mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              note
+              Note
             </label>
             <textarea
               name="note"

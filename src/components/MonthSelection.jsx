@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMonth } from "../redux/transactionsSlice";
-import { FaArrowRight } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 const MonthSelection = () => {
   const dispatch = useDispatch();
@@ -15,7 +14,6 @@ const MonthSelection = () => {
     dispatch(setSelectedMonth(newDate));
   };
 
-  // Function to format the date in "Month Year" format
   const formatMonthYear = (date) => {
     const monthNames = [
       "January", "February", "March", "April", "May", "June",
@@ -27,13 +25,15 @@ const MonthSelection = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-4 w-1/2 mx-auto">
+    <div className="flex justify-between items-center p-4 w-1/2 mx-auto dark:text-white">
       <button onClick={() => handleMonthChange(-1)}>
-        <FaArrowLeft/>
+        <FaArrowLeft />
       </button>
-      <div className="font-bold text-2xl text-center">{formatMonthYear(selectedMonth)}</div>
+      <div className="font-bold text-2xl text-center">
+        {formatMonthYear(selectedMonth)}
+      </div>
       <button onClick={() => handleMonthChange(1)}>
-        <FaArrowRight/>
+        <FaArrowRight />
       </button>
     </div>
   );

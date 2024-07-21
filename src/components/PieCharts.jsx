@@ -23,7 +23,7 @@ const PieCharts = ({ data }) => {
     labels: Object.keys(incomeCategoryTotals),
     datasets: [
       {
-        label: "Income by Category",
+        label: "Income",
         data: Object.values(incomeCategoryTotals),
         backgroundColor: Object.keys(incomeCategoryTotals).map(
           (category) => colorValues[category]
@@ -39,7 +39,7 @@ const PieCharts = ({ data }) => {
     labels: Object.keys(expenseCategoryTotals),
     datasets: [
       {
-        label: "Expense by Category",
+        label: "Expense",
         data: Object.values(expenseCategoryTotals),
         backgroundColor: Object.keys(expenseCategoryTotals).map(
           (category) => colorValues[category]

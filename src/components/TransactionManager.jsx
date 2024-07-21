@@ -11,7 +11,7 @@ const TransactionManager = () => {
   return (
     <div>
       <motion.button
-        className="fixed rounded-full bottom-8 right-5  text-white font-extrabold"
+        className="fixed rounded-full bottom-8 right-5 text-white font-extrabold"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsFormOpen(!isFormOpen)}

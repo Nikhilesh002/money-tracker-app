@@ -15,7 +15,6 @@ import PieCharts from "./PieCharts";
 import TransactionForm from "./TransactionForm";
 
 const TransactionList = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const transactions = useSelector((state) => state.transactions.transactions);
   const filters = useSelector((state) => state.transactions.filters);
   const selectedMonth = useSelector(
@@ -127,13 +126,7 @@ const TransactionList = () => {
   const { incomeTotal, expenseTotal } = calculateMonthlyTotals();
 
   return (
-    <div
-      className={
-        isDarkMode
-          ? "bg-gray-800 min-h-screen text-white mt-10 font-bold"
-          : "bg-gray-100 min-h-screen font-bold"
-      }
-    >
+    <div className="bg-gray-100 min-h-screen font-bold">
       <Toaster position="top-right" />
       <PieCharts data={displayingTransactions} />
       {/* filters */}
@@ -176,6 +169,7 @@ const TransactionList = () => {
           <option value="Utilities">Utilities</option>
           <option value="Salary">Salary</option>
           <option value="Gift">Gift</option>
+          <option value="Freelance">Freelance</option>
           <option value="Others">Others</option>
         </select>
         <select
@@ -204,20 +198,10 @@ const TransactionList = () => {
       {Object.keys(groupedTransactions).map((date, index) => (
         <div
           key={index}
-          className={
-            isDarkMode
-              ? "bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
-              : "bg-white shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
-          }
+          className="bg-white shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
         >
           <div className="flex justify-between mb-2">
-            <div
-              className={
-                isDarkMode
-                  ? "text-lg font-semibold text-white"
-                  : "text-lg font-semibold"
-              }
-            >
+            <div className="text-lg font-semibold">
               <span className="text-xl font-bold">
                 {new Date(date).getDate()}
               </span>

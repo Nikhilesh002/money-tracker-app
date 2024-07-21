@@ -14,7 +14,7 @@ export const colors = {
   Salary: "bg-amber-300",
   Gift: "bg-emerald-200",
   Others: "bg-gray-300",
-  Freelance: "bg-white",
+  Freelance: "bg-indigo-300",
 };
 
 export const colorValues = {
@@ -32,5 +32,5 @@ export const colorValues = {
   Salary: "#dd6b20",
   Gift: "#6ee7b7",
   Others: "#a0aec0",
-  Freelance: "#9999",
+  Freelance: "#a5b4fc",
 };
