@@ -1,0 +1,36 @@
+
+export const colors = {
+  Healthcare: "bg-green-300",
+  Shopping: "bg-red-300",
+  Travel: "bg-blue-300",
+  Investment: "bg-purple-300",
+  Education: "bg-yellow-300",
+  Entertainment: "bg-pink-300",
+  Transportation: "bg-teal-600",
+  Rent: "bg-indigo-300",
+  Food: "bg-orange-300",
+  Bonus: "bg-cyan-300",
+  Utilities: "bg-lime-300",
+  Salary: "bg-amber-300",
+  Gift: "bg-emerald-200",
+  Others: "bg-gray-300",
+  Freelance: "bg-white",
+};
+
+export const colorValues = {
+  Healthcare: "#38a169",
+  Shopping: "#e53e3e",
+  Travel: "#4299e1",
+  Investment: "#9f7aea",
+  Education: "#ecc94b",
+  Entertainment: "#ed64a6",
+  Transportation: "#0d9488",
+  Rent: "#667eea",
+  Food: "#ed8936",
+  Bonus: "#00b5d8",
+  Utilities: "#d69e2e",
+  Salary: "#dd6b20",
+  Gift: "#6ee7b7",
+  Others: "#a0aec0",
+  Freelance: "#9999",
+};

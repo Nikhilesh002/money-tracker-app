@@ -44,7 +44,7 @@ const TransactionForm = ({ transaction, onClose }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center"
+      className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center font-normal"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

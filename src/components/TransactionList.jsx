@@ -1,3 +1,4 @@
+import "chart.js/auto";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoSearchOutline } from "react-icons/io5";
@@ -8,6 +9,9 @@ import {
   setFilter,
   setSearch,
 } from "../redux/transactionsSlice";
+import { colors } from "../utils/CategoryColors";
+import { currencySymbol, exchange } from "../utils/CurrencyUtils";
+import PieCharts from "./PieCharts";
 import TransactionForm from "./TransactionForm";
 
 const TransactionList = () => {
@@ -19,7 +23,7 @@ const TransactionList = () => {
   );
   const dispatch = useDispatch();
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-  const [displayingTransactions, setDisplayingTransactions] = useState(null);
+  const [displayingTransactions, setDisplayingTransactions] = useState([]);
 
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
@@ -38,33 +42,37 @@ const TransactionList = () => {
     dispatch(setSearch(e.target.value));
   };
 
-  const filteredTransactions = transactions
-    .filter((transaction) => {
-      const transactionDate = new Date(transaction.dateTime);
-      return (
-        transactionDate.getMonth() === selectedMonth.getMonth() &&
-        transactionDate.getFullYear() === selectedMonth.getFullYear()
-      );
-    })
-    .filter((transaction) => {
-      return (
-        (filters.type ? transaction.type === filters.type : true) &&
-        (filters.category ? transaction.category === filters.category : true) &&
-        (filters.currency ? transaction.currency === filters.currency : true) &&
-        (filters.search
-          ? transaction.title
-              .toLowerCase()
-              .includes(filters.search.toLowerCase())
-          : true)
-      );
-    })
-    .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+  useEffect(() => {
+    const filteredTransactions = transactions
+      .filter((transaction) => {
+        const transactionDate = new Date(transaction.dateTime);
+        return (
+          transactionDate.getMonth() === selectedMonth.getMonth() &&
+          transactionDate.getFullYear() === selectedMonth.getFullYear()
+        );
+      })
+      .filter((transaction) => {
+        return (
+          (filters.type ? transaction.type === filters.type : true) &&
+          (filters.category
+            ? transaction.category === filters.category
+            : true) &&
+          (filters.currency
+            ? transaction.currency === filters.currency
+            : true) &&
+          (filters.search
+            ? transaction.title
+                .toLowerCase()
+                .includes(filters.search.toLowerCase())
+            : true)
+        );
+      })
+      .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
 
-  useEffect(()=>{
     setDisplayingTransactions(filteredTransactions);
-  },[filteredTransactions])
+  }, [transactions, filters, selectedMonth]);
 
-  const groupedTransactions = filteredTransactions.reduce(
+  const groupedTransactions = displayingTransactions.reduce(
     (acc, transaction) => {
       const date = transaction.dateTime.split("T")[0];
       if (!acc[date]) {
@@ -74,51 +82,23 @@ const TransactionList = () => {
       return acc;
     },
     {}
-  )
+  );
 
-  const colors = {
-    Healthcare: "bg-green-300",
-    Shopping: "bg-red-300",
-    Travel: "bg-blue-300",
-    Investment: "bg-purple-300",
-    Education: "bg-yellow-300",
-    Entertainment: "bg-pink-300",
-    Transportation: "bg-teal-300",
-    Rent: "bg-indigo-300",
-    Food: "bg-orange-300",
-    Bonus: "bg-cyan-300",
-    Utilities: "bg-lime-300",
-    Salary: "bg-amber-300",
-    Gift: "bg-purple-300",
-    Others: "bg-gray-300",
-  };
-
-  const getDay=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-  const currencySymbol = {
-    USD: "$",
-    EUR: "€",
-    INR: "₹",
-    GBP: "£",
-    JPY: "¥"
-  };
-
-  const exchange = {
-    INR: 1,
-    USD: 80,
-    EUR: 90,
-    GBP: 110,
-    JPY: 0.7
-  };
+  const getDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   function getSum(txnsOfAday, type) {
-    return txnsOfAday.reduce((sum, transaction) => {
-      let p=exchange[transaction.currency];
-      if ((type === 1 && transaction.type === "Income") || (type === 2 && transaction.type === "Expense")) {
-        return sum + transaction.amount*p;
-      }
-      return sum;
-    }, 0).toFixed(2);
+    return txnsOfAday
+      .reduce((sum, transaction) => {
+        let p = exchange[transaction.currency];
+        if (
+          (type === 1 && transaction.type === "Income") ||
+          (type === 2 && transaction.type === "Expense")
+        ) {
+          return sum + transaction.amount * p;
+        }
+        return sum;
+      }, 0)
+      .toFixed(2);
   }
 
   // Calculate monthly income and expense totals
@@ -145,7 +125,6 @@ const TransactionList = () => {
   };
 
   const { incomeTotal, expenseTotal } = calculateMonthlyTotals();
-  
 
   return (
     <div
@@ -156,6 +135,7 @@ const TransactionList = () => {
       }
     >
       <Toaster position="top-right" />
+      <PieCharts data={displayingTransactions} />
       {/* filters */}
       <div className="flex justify-evenly p-4 w-3/5 mx-auto font-semibold">
         <div className="flex">
@@ -166,7 +146,7 @@ const TransactionList = () => {
             onChange={handleSearchChange}
             className="border border-black p-1 rounded ps-2"
           />
-          <IoSearchOutline className=" pt-1 text-3xl relative right-8"/>
+          <IoSearchOutline className=" pt-1 text-3xl relative right-8" />
         </div>
         <select
           className="border border-black rounded px-1"
@@ -213,8 +193,12 @@ const TransactionList = () => {
       </div>
       {/* Monthly income and expense */}
       <div className="flex  justify-between p-4 gap-3 w-1/2 mx-auto font-bold text-2xl text-center">
-          <div className="text-green-500 bg-green-200 p-2 w-1/2 rounded ">Income: {currencySymbol["INR"]+" "+ incomeTotal}</div>
-          <div className="text-red-500 bg-red-200 p-2 w-1/2 rounded">Expense: {currencySymbol["INR"]+" "+ expenseTotal}</div>
+        <div className="text-green-500 bg-green-200 p-2 w-1/2 rounded ">
+          Income: {currencySymbol["INR"] + " " + incomeTotal}
+        </div>
+        <div className="text-red-500 bg-red-200 p-2 w-1/2 rounded">
+          Expense: {currencySymbol["INR"] + " " + expenseTotal}
+        </div>
       </div>
       {/* to show day wise of the month */}
       {Object.keys(groupedTransactions).map((date, index) => (
@@ -234,13 +218,25 @@ const TransactionList = () => {
                   : "text-lg font-semibold"
               }
             >
-              <span className="text-xl font-bold">{new Date(date).getDate()}</span>
-              <span className="ms-2 bg-gray-300 px-2 py-1 rounded text-lg">{getDay[new Date(date).getDay()]}</span>
+              <span className="text-xl font-bold">
+                {new Date(date).getDate()}
+              </span>
+              <span className="ms-2 bg-gray-300 px-2 py-1 rounded text-lg">
+                {getDay[new Date(date).getDay()]}
+              </span>
             </div>
-            <div className="flex justify-between gap-3">  
+            <div className="flex justify-between gap-3">
               {/* 1-> income  2->expense */}
-              <div className="text-green-500 bg-slate-50 rounded p-1">{currencySymbol["INR"]+" "+ getSum(groupedTransactions[date],1)}</div>
-              <div className="text-red-500 bg-slate-50 rounded p-1">{currencySymbol["INR"]+" "+ getSum(groupedTransactions[date],2)}</div>
+              <div className="text-green-500 bg-slate-50 rounded p-1">
+                {currencySymbol["INR"] +
+                  " " +
+                  getSum(groupedTransactions[date], 1)}
+              </div>
+              <div className="text-red-500 bg-slate-50 rounded p-1">
+                {currencySymbol["INR"] +
+                  " " +
+                  getSum(groupedTransactions[date], 2)}
+              </div>
             </div>
           </div>
           {groupedTransactions[date].map((transaction, index) => (
@@ -248,23 +244,42 @@ const TransactionList = () => {
               {/* cat note amount delete */}
               <div className="flex w-100">
                 <div className="w-3/4 flex ">
-                  <div className={`w-1/3 ${colors[transaction.category]} rounded`}>{transaction.category}</div>
+                  <div
+                    className={`w-1/3 ${colors[transaction.category]} rounded`}
+                  >
+                    {transaction.category}
+                  </div>
                   <div className="w-2/3">
-                    <button onClick={() => handleEdit(transaction)}>{transaction.title}</button>
+                    <button onClick={() => handleEdit(transaction)}>
+                      {transaction.title}
+                    </button>
                   </div>
                 </div>
                 <div className="w-1/4 flex justify-between">
-                <div className={transaction.type==="Income"?"text-green-500":"text-red-500"}>{currencySymbol[transaction.currency]+" "+ transaction.amount}</div>
-              <button className="" onClick={() => handleDelete(transaction.id)}>
-                <MdOutlineDeleteForever className="text-red-500 font-extrabold text-2xl" />
-              </button>
-              </div>
+                  <div
+                    className={
+                      transaction.type === "Income"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }
+                  >
+                    {currencySymbol[transaction.currency] +
+                      " " +
+                      transaction.amount}
+                  </div>
+                  <button
+                    className=""
+                    onClick={() => handleDelete(transaction.id)}
+                  >
+                    <MdOutlineDeleteForever className="text-red-500 font-extrabold text-2xl" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       ))}
-      {selectedTransaction!==null && (
+      {selectedTransaction !== null && (
         <TransactionForm
           transaction={selectedTransaction}
           onClose={() => setSelectedTransaction(null)}
