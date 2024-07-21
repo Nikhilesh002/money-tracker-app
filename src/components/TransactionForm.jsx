@@ -133,7 +133,11 @@ const TransactionForm = ({ transaction, onClose }) => {
                 <option value="Entertainment">Entertainment</option>
                 <option value="Transportation">Transportation</option>
                 <option value="Rent">Rent</option>
+                <option value="Food">Food</option>
+                <option value="Bonus">Bonus</option>
                 <option value="Utilities">Utilities</option>
+                <option value="Salary">Salary</option>
+                <option value="Gift">Gift</option>
                 <option value="Others">Others</option>
               </select>
             </div>

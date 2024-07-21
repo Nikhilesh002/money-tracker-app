@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { IoSearchOutline } from "react-icons/io5";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +19,7 @@ const TransactionList = () => {
   );
   const dispatch = useDispatch();
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [displayingTransactions, setDisplayingTransactions] = useState(null);
 
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
@@ -58,6 +60,10 @@ const TransactionList = () => {
     })
     .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
 
+  useEffect(()=>{
+    setDisplayingTransactions(filteredTransactions);
+  },[filteredTransactions])
+
   const groupedTransactions = filteredTransactions.reduce(
     (acc, transaction) => {
       const date = transaction.dateTime.split("T")[0];
@@ -68,35 +74,102 @@ const TransactionList = () => {
       return acc;
     },
     {}
-  );
+  )
 
-  function getSum(txnsOfAday,type){
-    let sum=0;
-    for(let i=0;i<txnsOfAday.length;i++){
-      if(txnsOfAday[i].type==="Income" && type===1) sum+=txnsOfAday[i].amount;
-      if(txnsOfAday[i].type==="Expense" && type===2) sum+=txnsOfAday[i].amount;
-    }
-    return sum===0?sum:sum.toFixed(2);
+  const colors = {
+    Healthcare: "bg-green-300",
+    Shopping: "bg-red-300",
+    Travel: "bg-blue-300",
+    Investment: "bg-purple-300",
+    Education: "bg-yellow-300",
+    Entertainment: "bg-pink-300",
+    Transportation: "bg-teal-300",
+    Rent: "bg-indigo-300",
+    Food: "bg-orange-300",
+    Bonus: "bg-cyan-300",
+    Utilities: "bg-lime-300",
+    Salary: "bg-amber-300",
+    Gift: "bg-purple-300",
+    Others: "bg-gray-300",
+  };
+
+  const getDay=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+  const currencySymbol = {
+    USD: "$",
+    EUR: "€",
+    INR: "₹",
+    GBP: "£",
+    JPY: "¥"
+  };
+
+  const exchange = {
+    INR: 1,
+    USD: 80,
+    EUR: 90,
+    GBP: 110,
+    JPY: 0.7
+  };
+
+  function getSum(txnsOfAday, type) {
+    return txnsOfAday.reduce((sum, transaction) => {
+      let p=exchange[transaction.currency];
+      if ((type === 1 && transaction.type === "Income") || (type === 2 && transaction.type === "Expense")) {
+        return sum + transaction.amount*p;
+      }
+      return sum;
+    }, 0).toFixed(2);
   }
+
+  // Calculate monthly income and expense totals
+  const calculateMonthlyTotals = () => {
+    const filteredTransactions = transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.dateTime);
+      return (
+        transactionDate.getMonth() === selectedMonth.getMonth() &&
+        transactionDate.getFullYear() === selectedMonth.getFullYear()
+      );
+    });
+
+    const incomeTotal = filteredTransactions
+      .filter((transaction) => transaction.type === "Income")
+      .reduce((acc, transaction) => acc + transaction.amount, 0)
+      .toFixed(2);
+
+    const expenseTotal = filteredTransactions
+      .filter((transaction) => transaction.type === "Expense")
+      .reduce((acc, transaction) => acc + transaction.amount, 0)
+      .toFixed(2);
+
+    return { incomeTotal, expenseTotal };
+  };
+
+  const { incomeTotal, expenseTotal } = calculateMonthlyTotals();
+  
 
   return (
     <div
       className={
         isDarkMode
           ? "bg-gray-800 min-h-screen text-white mt-10 font-bold"
-          : "bg-gray-100 min-h-screen mt-10 font-bold"
+          : "bg-gray-100 min-h-screen font-bold"
       }
     >
       <Toaster position="top-right" />
       {/* filters */}
-      <div className="filters flex justify-between p-4">
-        <input
-          type="text"
-          placeholder="Search by Title"
-          value={filters.search}
-          onChange={handleSearchChange}
-        />
+      <div className="flex justify-evenly p-4 w-3/5 mx-auto font-semibold">
+        <div className="flex">
+          <input
+            type="text"
+            placeholder="Search by Title"
+            value={filters.search}
+            onChange={handleSearchChange}
+            className="border border-black p-1 rounded ps-2"
+          />
+          <IoSearchOutline className=" pt-1 text-3xl relative right-8"/>
+        </div>
         <select
+          className="border border-black rounded px-1"
           value={filters.type}
           onChange={(e) => handleFilterChange("type", e.target.value)}
         >
@@ -105,6 +178,7 @@ const TransactionList = () => {
           <option value="Expense">Expense</option>
         </select>
         <select
+          className="border border-black rounded px-1"
           value={filters.category}
           onChange={(e) => handleFilterChange("category", e.target.value)}
         >
@@ -117,10 +191,15 @@ const TransactionList = () => {
           <option value="Entertainment">Entertainment</option>
           <option value="Transportation">Transportation</option>
           <option value="Rent">Rent</option>
+          <option value="Food">Food</option>
+          <option value="Bonus">Bonus</option>
           <option value="Utilities">Utilities</option>
+          <option value="Salary">Salary</option>
+          <option value="Gift">Gift</option>
           <option value="Others">Others</option>
         </select>
         <select
+          className="border border-black rounded px-1"
           value={filters.currency}
           onChange={(e) => handleFilterChange("currency", e.target.value)}
         >
@@ -131,6 +210,11 @@ const TransactionList = () => {
           <option value="GBP">GBP</option>
           <option value="JPY">JPY</option>
         </select>
+      </div>
+      {/* Monthly income and expense */}
+      <div className="flex  justify-between p-4 gap-3 w-1/2 mx-auto font-bold text-2xl text-center">
+          <div className="text-green-500 bg-green-200 p-2 w-1/2 rounded ">Income: {currencySymbol["INR"]+" "+ incomeTotal}</div>
+          <div className="text-red-500 bg-red-200 p-2 w-1/2 rounded">Expense: {currencySymbol["INR"]+" "+ expenseTotal}</div>
       </div>
       {/* to show day wise of the month */}
       {Object.keys(groupedTransactions).map((date, index) => (
@@ -150,26 +234,27 @@ const TransactionList = () => {
                   : "text-lg font-semibold"
               }
             >
-              {new Date(date).toLocaleDateString()}
+              <span className="text-xl font-bold">{new Date(date).getDate()}</span>
+              <span className="ms-2 bg-gray-300 px-2 py-1 rounded text-lg">{getDay[new Date(date).getDay()]}</span>
             </div>
-            <div className="flex justify-between gap-2">  
+            <div className="flex justify-between gap-3">  
               {/* 1-> income  2->expense */}
-              <div className="text-green-500">{getSum(groupedTransactions[date],1)}</div>
-              <div className="text-red-500">{getSum(groupedTransactions[date],2)}</div>
+              <div className="text-green-500 bg-slate-50 rounded p-1">{currencySymbol["INR"]+" "+ getSum(groupedTransactions[date],1)}</div>
+              <div className="text-red-500 bg-slate-50 rounded p-1">{currencySymbol["INR"]+" "+ getSum(groupedTransactions[date],2)}</div>
             </div>
           </div>
           {groupedTransactions[date].map((transaction, index) => (
-            <div key={index} className="my-0.5 text-center">
+            <div key={index} className="my-0.5 text-center bg-slate-50 p-1">
               {/* cat note amount delete */}
               <div className="flex w-100">
                 <div className="w-3/4 flex ">
-                  <div className="w-1/3 bg-slate-200 rounded">{transaction.category}</div>
+                  <div className={`w-1/3 ${colors[transaction.category]} rounded`}>{transaction.category}</div>
                   <div className="w-2/3">
                     <button onClick={() => handleEdit(transaction)}>{transaction.title}</button>
                   </div>
                 </div>
                 <div className="w-1/4 flex justify-between">
-                <div className={transaction.type==="Income"?"text-green-500":"text-red-500"}>{transaction.amount}</div>
+                <div className={transaction.type==="Income"?"text-green-500":"text-red-500"}>{currencySymbol[transaction.currency]+" "+ transaction.amount}</div>
               <button className="" onClick={() => handleDelete(transaction.id)}>
                 <MdOutlineDeleteForever className="text-red-500 font-extrabold text-2xl" />
               </button>

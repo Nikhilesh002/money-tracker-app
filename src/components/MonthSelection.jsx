@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMonth } from "../redux/transactionsSlice";
+import { FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 const MonthSelection = () => {
   const dispatch = useDispatch();
@@ -25,10 +27,14 @@ const MonthSelection = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-4">
-      <button onClick={() => handleMonthChange(-1)}>&lt;</button>
-      <span>{formatMonthYear(selectedMonth)}</span>
-      <button onClick={() => handleMonthChange(1)}>&gt;</button>
+    <div className="flex justify-between items-center p-4 w-1/2 mx-auto">
+      <button onClick={() => handleMonthChange(-1)}>
+        <FaArrowLeft/>
+      </button>
+      <div className="font-bold text-2xl text-center">{formatMonthYear(selectedMonth)}</div>
+      <button onClick={() => handleMonthChange(1)}>
+        <FaArrowRight/>
+      </button>
     </div>
   );
 };
