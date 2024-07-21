@@ -24,7 +24,9 @@ const TransactionManager = () => {
           onClose={() => setIsFormOpen(false)}
         />
       )}
+      <div className="dark:bg-gray-900">
       <MonthSelection />
+      </div>
       <TransactionList />
     </div>
   );

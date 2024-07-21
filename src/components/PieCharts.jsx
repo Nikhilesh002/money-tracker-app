@@ -52,12 +52,12 @@ const PieCharts = ({ data }) => {
   };
 
   return (
-    <div className="w-1/2 flex gap-4 mx-auto">
+    <div className="w-1/2 flex gap-4 mx-auto dark:text-white">
       <div className="w-1/2 p-8">
-        <Pie data={incomeData} />
+        <Pie data={incomeData} className="dark:text-white" />
       </div>
       <div className="w-1/2 p-8">
-        <Pie data={expenseData} />
+        <Pie data={expenseData} className="dark:text-white" />
       </div>
     </div>
   );

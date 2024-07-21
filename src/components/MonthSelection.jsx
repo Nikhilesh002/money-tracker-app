@@ -25,15 +25,15 @@ const MonthSelection = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-4 w-1/2 mx-auto dark:text-white">
+    <div className="flex justify-between items-center p-4 w-1/2 mx-auto dark:bg-gray-900 dark:text-white">
       <button onClick={() => handleMonthChange(-1)}>
-        <FaArrowLeft />
+        <FaArrowLeft className=" text-3xl" />
       </button>
-      <div className="font-bold text-2xl text-center">
+      <div className="font-bold text-2xl text-center dark:text-white">
         {formatMonthYear(selectedMonth)}
       </div>
       <button onClick={() => handleMonthChange(1)}>
-        <FaArrowRight />
+        <FaArrowRight className="text-3xl" />
       </button>
     </div>
   );

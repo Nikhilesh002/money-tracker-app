@@ -13,6 +13,7 @@ import { colors } from "../utils/CategoryColors";
 import { currencySymbol, exchange } from "../utils/CurrencyUtils";
 import PieCharts from "./PieCharts";
 import TransactionForm from "./TransactionForm";
+import { motion } from "framer-motion";
 
 const TransactionList = () => {
   const transactions = useSelector((state) => state.transactions.transactions);
@@ -102,7 +103,7 @@ const TransactionList = () => {
 
   // Calculate monthly income and expense totals
   const calculateMonthlyTotals = () => {
-    const filteredTransactions = transactions.filter((transaction) => {
+    const filteredTransactions = displayingTransactions.filter((transaction) => {
       const transactionDate = new Date(transaction.dateTime);
       return (
         transactionDate.getMonth() === selectedMonth.getMonth() &&
@@ -126,23 +127,42 @@ const TransactionList = () => {
   const { incomeTotal, expenseTotal } = calculateMonthlyTotals();
 
   return (
-    <div className="bg-gray-100 min-h-screen font-bold">
+    <div className="bg-gray-100 dark:bg-gray-800 min-h-screen font-bold text-gray-900 dark:text-gray-100">
       <Toaster position="top-right" />
       <PieCharts data={displayingTransactions} />
+      {/* Monthly income and expense */}
+      <motion.div 
+        className="flex justify-between p-4 gap-3 w-1/2 mx-auto font-bold text-2xl text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="text-green-500 dark:text-green-400 bg-green-200 dark:bg-green-800 p-2 w-1/2 rounded ">
+          Income: {currencySymbol["INR"] + " " + incomeTotal}
+        </div>
+        <div className="text-red-500 dark:text-red-400 bg-red-200 dark:bg-red-800 p-2 w-1/2 rounded">
+          Expense: {currencySymbol["INR"] + " " + expenseTotal}
+        </div>
+      </motion.div>
       {/* filters */}
-      <div className="flex justify-evenly p-4 w-3/5 mx-auto font-semibold">
+      <motion.div 
+        className="flex justify-evenly p-4 w-3/5 mx-auto font-semibold"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="flex">
           <input
             type="text"
             placeholder="Search by Title"
             value={filters.search}
             onChange={handleSearchChange}
-            className="border border-black p-1 rounded ps-2"
+            className="border border-black dark:border-white p-1 rounded ps-2 dark:bg-gray-800 dark:text-gray-100"
           />
-          <IoSearchOutline className=" pt-1 text-3xl relative right-8" />
+          <IoSearchOutline className=" pt-1 text-3xl z-1 relative right-8 dark:text-gray-100" />
         </div>
         <select
-          className="border border-black rounded px-1"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.type}
           onChange={(e) => handleFilterChange("type", e.target.value)}
         >
@@ -151,7 +171,7 @@ const TransactionList = () => {
           <option value="Expense">Expense</option>
         </select>
         <select
-          className="border border-black rounded px-1"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.category}
           onChange={(e) => handleFilterChange("category", e.target.value)}
         >
@@ -173,7 +193,7 @@ const TransactionList = () => {
           <option value="Others">Others</option>
         </select>
         <select
-          className="border border-black rounded px-1"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.currency}
           onChange={(e) => handleFilterChange("currency", e.target.value)}
         >
@@ -184,39 +204,33 @@ const TransactionList = () => {
           <option value="GBP">GBP</option>
           <option value="JPY">JPY</option>
         </select>
-      </div>
-      {/* Monthly income and expense */}
-      <div className="flex  justify-between p-4 gap-3 w-1/2 mx-auto font-bold text-2xl text-center">
-        <div className="text-green-500 bg-green-200 p-2 w-1/2 rounded ">
-          Income: {currencySymbol["INR"] + " " + incomeTotal}
-        </div>
-        <div className="text-red-500 bg-red-200 p-2 w-1/2 rounded">
-          Expense: {currencySymbol["INR"] + " " + expenseTotal}
-        </div>
-      </div>
+      </motion.div>
       {/* to show day wise of the month */}
       {Object.keys(groupedTransactions).map((date, index) => (
-        <div
+        <motion.div
           key={index}
-          className="bg-white shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
+          className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
         >
           <div className="flex justify-between mb-2">
             <div className="text-lg font-semibold">
               <span className="text-xl font-bold">
                 {new Date(date).getDate()}
               </span>
-              <span className="ms-2 bg-gray-300 px-2 py-1 rounded text-lg">
+              <span className="ms-2 bg-gray-300 dark:bg-gray-600 px-2 py-1 rounded text-lg">
                 {getDay[new Date(date).getDay()]}
               </span>
             </div>
             <div className="flex justify-between gap-3">
               {/* 1-> income  2->expense */}
-              <div className="text-green-500 bg-slate-50 rounded p-1">
+              <div className="text-green-500 dark:text-green-400 bg-slate-50 dark:bg-gray-700 rounded p-1">
                 {currencySymbol["INR"] +
                   " " +
                   getSum(groupedTransactions[date], 1)}
               </div>
-              <div className="text-red-500 bg-slate-50 rounded p-1">
+              <div className="text-red-500 dark:text-red-400 bg-slate-50 dark:bg-gray-700 rounded p-1">
                 {currencySymbol["INR"] +
                   " " +
                   getSum(groupedTransactions[date], 2)}
@@ -224,7 +238,14 @@ const TransactionList = () => {
             </div>
           </div>
           {groupedTransactions[date].map((transaction, index) => (
-            <div key={index} className="my-0.5 text-center bg-slate-50 p-1">
+            <motion.div
+              key={index}
+              className="my-1 text-center bg-slate-50 dark:bg-gray-800 p-1"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              whileHover={{ scale: 1.02, boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}
+              transition={{ duration: 0.3 }}
+            >
               {/* cat note amount delete */}
               <div className="flex w-100">
                 <div className="w-3/4 flex ">
@@ -243,8 +264,8 @@ const TransactionList = () => {
                   <div
                     className={
                       transaction.type === "Income"
-                        ? "text-green-500"
-                        : "text-red-500"
+                        ? "text-green-500 dark:text-green-400"
+                        : "text-red-500 dark:text-red-400"
                     }
                   >
                     {currencySymbol[transaction.currency] +
@@ -255,13 +276,13 @@ const TransactionList = () => {
                     className=""
                     onClick={() => handleDelete(transaction.id)}
                   >
-                    <MdOutlineDeleteForever className="text-red-500 font-extrabold text-2xl" />
+                    <MdOutlineDeleteForever className="text-red-500 dark:text-red-400 font-extrabold text-2xl" />
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ))}
       {selectedTransaction !== null && (
         <TransactionForm

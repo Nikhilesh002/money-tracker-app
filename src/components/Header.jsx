@@ -1,6 +1,6 @@
 function Header() {
   return (
-    <div className="text-4xl font-mono py-2 text-center border-b-2 font-bold dark:text-white dark:bg-gray-800">
+    <div className="text-4xl font-mono py-2 text-center font-bold dark:text-white dark:bg-gray-950">
       Transaction management app
     </div>
   );

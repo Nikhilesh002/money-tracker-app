@@ -52,7 +52,7 @@ function App() {
     <div className={`${isDarkMode ? "dark" : ""}`}>
       <Header />
       <button
-        className="absolute mt-4 right-3 border bg-white dark:bg-gray-800 dark:text-white border-gray-700 p-0.5 text-2xl rounded"
+        className="absolute mt-4 right-3 border bg-white dark:bg-gray-800 dark:text-white border-gray-700 dark:border-white p-0.5 text-2xl rounded"
         onClick={toggleDarkMode}
       >
         {isDarkMode ? <CiLight /> : <MdDarkMode />}
