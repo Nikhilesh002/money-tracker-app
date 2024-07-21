@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { FaRegWindowClose } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import uuid from "react-uuid";
@@ -27,7 +27,7 @@ const TransactionForm = ({ transaction, onClose }) => {
       toast.error("Please fill in all fields");
       return;
     }
-    formData.amount=Number(formData.amount);
+    formData.amount = Number(formData.amount);
     // console.log(formData);
     if (transaction) {
       dispatch(editTransaction(formData));
@@ -75,7 +75,9 @@ const TransactionForm = ({ transaction, onClose }) => {
           <div className="flex gap-2">
             <button
               className={`w-1/2 ${
-                formData.type === "Income" ? "bg-green-400 dark:bg-green-600 rounded" : ""
+                formData.type === "Income"
+                  ? "bg-green-400 dark:bg-green-600 rounded"
+                  : ""
               }`}
               onClick={() => setFormData({ ...formData, type: "Income" })}
             >
@@ -83,7 +85,9 @@ const TransactionForm = ({ transaction, onClose }) => {
             </button>
             <button
               className={`w-1/2 ${
-                formData.type === "Expense" ? "bg-red-400 dark:bg-red-600 rounded" : ""
+                formData.type === "Expense"
+                  ? "bg-red-400 dark:bg-red-600 rounded"
+                  : ""
               }`}
               onClick={() => setFormData({ ...formData, type: "Expense" })}
             >
@@ -130,12 +134,20 @@ const TransactionForm = ({ transaction, onClose }) => {
               >
                 <option disabled>Select Category</option>
                 <option value="Healthcare">Healthcare</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Food and Drinks">Food and Drinks</option>
-                <option value="Transportation">Transportation</option>
-                <option value="Housing">Housing</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Travel">Travel</option>
+                <option value="Investment">Investment</option>
+                <option value="Education">Education</option>
                 <option value="Entertainment">Entertainment</option>
-                <option value="Miscellaneous">Miscellaneous</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Rent">Rent</option>
+                <option value="Food">Food</option>
+                <option value="Bonus">Bonus</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Salary">Salary</option>
+                <option value="Gift">Gift</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Others">Others</option>
               </select>
             </div>
             <div className="w-1/2">

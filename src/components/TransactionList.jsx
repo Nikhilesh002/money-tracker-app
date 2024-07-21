@@ -1,4 +1,5 @@
 import "chart.js/auto";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoSearchOutline } from "react-icons/io5";
@@ -13,7 +14,6 @@ import { colors } from "../utils/CategoryColors";
 import { currencySymbol, exchange } from "../utils/CurrencyUtils";
 import PieCharts from "./PieCharts";
 import TransactionForm from "./TransactionForm";
-import { motion } from "framer-motion";
 
 const TransactionList = () => {
   const transactions = useSelector((state) => state.transactions.transactions);
@@ -103,13 +103,15 @@ const TransactionList = () => {
 
   // Calculate monthly income and expense totals
   const calculateMonthlyTotals = () => {
-    const filteredTransactions = displayingTransactions.filter((transaction) => {
-      const transactionDate = new Date(transaction.dateTime);
-      return (
-        transactionDate.getMonth() === selectedMonth.getMonth() &&
-        transactionDate.getFullYear() === selectedMonth.getFullYear()
-      );
-    });
+    const filteredTransactions = displayingTransactions.filter(
+      (transaction) => {
+        const transactionDate = new Date(transaction.dateTime);
+        return (
+          transactionDate.getMonth() === selectedMonth.getMonth() &&
+          transactionDate.getFullYear() === selectedMonth.getFullYear()
+        );
+      }
+    );
 
     const incomeTotal = filteredTransactions
       .filter((transaction) => transaction.type === "Income")
@@ -127,42 +129,42 @@ const TransactionList = () => {
   const { incomeTotal, expenseTotal } = calculateMonthlyTotals();
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 min-h-screen font-bold text-gray-900 dark:text-gray-100 p-4 sm:p-6 lg:p-8">
+    <div className="bg-gray-100 dark:bg-gray-800 min-h-screen font-bold text-gray-900 dark:text-gray-100">
       <Toaster position="top-right" />
       <PieCharts data={displayingTransactions} />
       {/* Monthly income and expense */}
-      <motion.div 
-        className="flex flex-col sm:flex-row justify-between p-4 gap-3 w-full sm:w-4/5 lg:w-1/2 mx-auto font-bold text-xl sm:text-2xl text-center"
+      <motion.div
+        className="flex justify-between p-4 gap-3 w-1/2 mx-auto font-bold text-2xl text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="text-green-500 dark:text-green-400 bg-green-200 dark:bg-green-800 p-2 w-full sm:w-1/2 rounded ">
+        <div className="text-green-500 dark:text-green-400 bg-green-200 dark:bg-green-800 p-2 w-1/2 rounded ">
           Income: {currencySymbol["INR"] + " " + incomeTotal}
         </div>
-        <div className="text-red-500 dark:text-red-400 bg-red-200 dark:bg-red-800 p-2 w-full sm:w-1/2 rounded">
+        <div className="text-red-500 dark:text-red-400 bg-red-200 dark:bg-red-800 p-2 w-1/2 rounded">
           Expense: {currencySymbol["INR"] + " " + expenseTotal}
         </div>
       </motion.div>
       {/* filters */}
-      <motion.div 
-        className="flex flex-col sm:flex-row justify-evenly p-4 w-full sm:w-4/5 lg:w-3/5 mx-auto font-semibold gap-4 sm:gap-2"
+      <motion.div
+        className="flex justify-evenly p-4 w-3/5 mx-auto font-semibold"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex w-full sm:w-auto">
+        <div className="flex">
           <input
             type="text"
             placeholder="Search by Title"
             value={filters.search}
             onChange={handleSearchChange}
-            className="border border-black dark:border-white p-1 rounded ps-2 dark:bg-gray-800 dark:text-gray-100 w-full sm:w-auto"
+            className="border border-black dark:border-white p-1 rounded ps-2 dark:bg-gray-800 dark:text-gray-100"
           />
-          <IoSearchOutline className="pt-1 text-3xl z-1 relative right-8 dark:text-gray-100" />
+          <IoSearchOutline className=" pt-1 text-3xl z-1 relative right-8 dark:text-gray-100" />
         </div>
         <select
-          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100 w-full sm:w-auto"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.type}
           onChange={(e) => handleFilterChange("type", e.target.value)}
         >
@@ -171,7 +173,7 @@ const TransactionList = () => {
           <option value="Expense">Expense</option>
         </select>
         <select
-          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100 w-full sm:w-auto"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.category}
           onChange={(e) => handleFilterChange("category", e.target.value)}
         >
@@ -193,7 +195,7 @@ const TransactionList = () => {
           <option value="Others">Others</option>
         </select>
         <select
-          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100 w-full sm:w-auto"
+          className="border border-black dark:border-white rounded px-1 dark:bg-gray-800 dark:text-gray-100"
           value={filters.currency}
           onChange={(e) => handleFilterChange("currency", e.target.value)}
         >
@@ -209,7 +211,7 @@ const TransactionList = () => {
       {Object.keys(groupedTransactions).map((date, index) => (
         <motion.div
           key={index}
-          className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-full sm:w-4/5 lg:w-1/2 mx-auto"
+          className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 mb-4 w-1/2 mx-auto"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
@@ -243,7 +245,10 @@ const TransactionList = () => {
               className="my-1 text-center bg-slate-50 dark:bg-gray-800 p-1"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              whileHover={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)" }}
+              whileHover={{
+                scale: 1.01,
+                boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)",
+              }}
               transition={{ duration: 0.2 }}
               onClick={(e) => {
                 if (e.target.closest(".delete-icon")) {
@@ -254,14 +259,17 @@ const TransactionList = () => {
             >
               {/* cat note amount delete */}
               <div className="flex w-100">
-                <div className="w-3/4 flex">
+                <div className="w-3/4 flex ">
                   <div
                     className={`w-1/3 ${colors[transaction.category]} rounded`}
                   >
                     {transaction.category}
                   </div>
                   <div className="w-2/3">
-                    <button className="hover:underline hover:text-gray-300" onClick={() => handleEdit(transaction)}>
+                    <button
+                      className="hover:text-gray-300"
+                      onClick={() => handleEdit(transaction)}
+                    >
                       {transaction.title}
                     </button>
                   </div>
